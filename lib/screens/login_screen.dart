@@ -12,6 +12,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
+  bool loading = false;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -58,35 +59,45 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     height: size.height / 20,
                   ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                        onPressed: ()async {
-                          if (emailController.text == "" ||
-                              passController.text == "") {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('All fields are required')));
-                          } else {
-                            User? result = await AuthService().login(
-                                emailController.text, passController.text,context);
-                            if (result != null) {
-                              // ignore: avoid_print
-                              print(result.email);
-                            }
-                            // ignore: avoid_print
-                            print('success');
-
-                          }
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: size.height / 30,
-                            horizontal: 0,
-                          ),
-                          child: const Text('Login'),
-                        )),
-                  ),
+                  loading
+                      ? const CircularProgressIndicator()
+                      : SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                              onPressed: () async {
+                                setState(() {
+                                  loading = true;
+                                });
+                                if (emailController.text == "" ||
+                                    passController.text == "") {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content:
+                                              Text('All fields are required')));
+                                } else {
+                                  User? result = await AuthService().login(
+                                      emailController.text,
+                                      passController.text,
+                                      context);
+                                  if (result != null) {
+                                    // ignore: avoid_print
+                                    print(result.email);
+                                  }
+                                  // ignore: avoid_print
+                                  print('success');
+                                }
+                                setState(() {
+                                  loading = false;
+                                });
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: size.height / 30,
+                                  horizontal: 0,
+                                ),
+                                child: const Text('Login'),
+                              )),
+                        ),
                   SizedBox(
                     height: size.height / 120,
                   ),
