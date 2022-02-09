@@ -11,9 +11,10 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  var emailController = TextEditingController();
-  var passController = TextEditingController();
-  var cnfPassController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passController = TextEditingController();
+  TextEditingController cnfPassController = TextEditingController();
+  bool loading = false;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -72,37 +73,49 @@ class _SignupScreenState extends State<SignupScreen> {
                   SizedBox(
                     height: size.height / 20,
                   ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                        onPressed: () async {
-                          if (emailController.text == "" ||
-                              passController.text == "") {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('All fields are required')));
-                          } else if (passController.text !=
-                              cnfPassController.text) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text("password didn't match")));
-                          } else {
-                            User? result = await AuthService().register(
-                            emailController.text, passController.text,context);
-                            if (result != null) {
-                              print(result.email);
-                            }
-                            print('success');
-                          }
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: size.height / 30,
-                            horizontal: 0,
-                          ),
-                          child: const Text('SignUp'),
-                        )),
-                  ),
+                  loading
+                      ? const CircularProgressIndicator()
+                      : SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                              onPressed: () async {
+                                setState(() {
+                                  loading = true;
+                                });
+                                if (emailController.text == "" ||
+                                    passController.text == "") {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content:
+                                              Text('All fields are required')));
+                                } else if (passController.text !=
+                                    cnfPassController.text) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content:
+                                              Text("password didn't match")));
+                                } else {
+                                  User? result = await AuthService().register(
+                                      emailController.text,
+                                      passController.text,
+                                      context);
+                                  if (result != null) {
+                                    print(result.email);
+                                  }
+                                  print('success');
+                                }
+                                setState(() {
+                                  loading = false;
+                                });
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: size.height / 30,
+                                  horizontal: 0,
+                                ),
+                                child: const Text('SignUp'),
+                              )),
+                        ),
                   SizedBox(
                     height: size.height / 120,
                   ),
