@@ -70,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     content: Text('All fields are required')));
                           } else {
                             User? result = await AuthService().login(
-                                emailController.text, passController.text);
+                                emailController.text, passController.text,context);
                             if (result != null) {
                               // ignore: avoid_print
                               print(result.email);

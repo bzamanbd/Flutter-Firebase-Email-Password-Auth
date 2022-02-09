@@ -88,7 +88,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                     content: Text("password didn't match")));
                           } else {
                             User? result = await AuthService().register(
-                                emailController.text, passController.text);
+                            emailController.text, passController.text,context);
                             if (result != null) {
                               print(result.email);
                             }
