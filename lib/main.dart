@@ -12,7 +12,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  final String _title = 'Firebase First App';
+  final String _title = 'FirebaseEmailAuth';
   const MyApp({Key? key}) : super(key: key);
 
   @override

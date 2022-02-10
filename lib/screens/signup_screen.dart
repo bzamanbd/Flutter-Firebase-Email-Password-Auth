@@ -100,9 +100,10 @@ class _SignupScreenState extends State<SignupScreen> {
                                       passController.text,
                                       context);
                                   if (result != null) {
-                                    print(result.email);
+                                    Navigator.pushNamedAndRemoveUntil(
+                                        context, '/home', (route) => false);
                                   }
-                                  print('success');
+                                  // print('success');
                                 }
                                 setState(() {
                                   loading = false;

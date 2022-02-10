@@ -80,11 +80,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                       passController.text,
                                       context);
                                   if (result != null) {
-                                    // ignore: avoid_print
-                                    print(result.email);
+                                    Navigator.pushNamedAndRemoveUntil(context,
+                                        '/home', (route) => false);
                                   }
                                   // ignore: avoid_print
-                                  print('success');
+                                  // print('success');
                                 }
                                 setState(() {
                                   loading = false;
