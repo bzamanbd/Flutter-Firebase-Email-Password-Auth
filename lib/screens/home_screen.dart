@@ -13,8 +13,9 @@ class HomeScreen extends StatelessWidget {
           actions: [
             TextButton.icon(
             onPressed: (){},
-            icon: const Icon(Icons.logout),
-            label: const Text('Logout')
+            icon:  const Icon(Icons.logout),
+            label: const Text('Logout'),
+            style: TextButton.styleFrom(primary: Colors.white)
           ),
           ],
         ),

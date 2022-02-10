@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_first_app/screens/signup_screen.dart';
+import 'package:firebase_first_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/home_screen.dart';
@@ -12,7 +13,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  final String _title = 'FirebaseEmailAuth';
+  final String _title = 'Email Auth';
   const MyApp({Key? key}) : super(key: key);
 
   @override
@@ -21,7 +22,15 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: _title,
       theme: ThemeData(primarySwatch: Colors.pink),
-      home: const SignupScreen(),
+      home: StreamBuilder(
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            return HomeScreen(title: _title);
+          }
+          return const LoginScreen();
+        },
+        stream: AuthService().firebaseAuth.authStateChanges(),
+      ),
       routes: {
         '/home': (_) => HomeScreen(title: _title),
         '/signup': (_) => const SignupScreen(),
