@@ -23,11 +23,12 @@ class MyApp extends StatelessWidget {
       title: _title,
       theme: ThemeData(primarySwatch: Colors.pink),
       home: StreamBuilder(
-        builder: (context, AsyncSnapshot snapshot) {
+        builder: (context, snapshot) {
           if (snapshot.hasData) {
             return HomeScreen(title: _title);
+            // return const SignupScreen();
           }
-          return const LoginScreen();
+          return const SignupScreen();
         },
         stream: AuthService().firebaseAuth.authStateChanges(),
       ),

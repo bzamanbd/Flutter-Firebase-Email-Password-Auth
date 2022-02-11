@@ -3,6 +3,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_first_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/button_view.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -14,7 +16,7 @@ class _SignupScreenState extends State<SignupScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
   TextEditingController cnfPassController = TextEditingController();
-  bool loading = false;
+  bool loading = false; /*ForCreatingProgressIndicator*/
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -131,6 +133,22 @@ class _SignupScreenState extends State<SignupScreen> {
                           child: const Text('Login'))
                     ],
                   ),
+                  const Divider(),
+                  SizedBox(
+                    height: size.height / 120,
+                  ),
+                  loading
+                      ? const CircularProgressIndicator()
+                      : SignInButton(Buttons.Google,
+                          text: 'Continue with Google', onPressed: () async {
+                          setState(() {
+                            loading = true;
+                          });
+                          await AuthService().googleLogin(context);
+                          setState(() {
+                            loading = false;
+                          });
+                        })
                 ],
               ),
             ),
