@@ -83,6 +83,7 @@ class HomeScreen extends StatelessWidget {
                     },
                     child: const Text('Update Data')),
 
+                //to delete data//
                 ElevatedButton(
                     onPressed: () async {
                       await firestore
